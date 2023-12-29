@@ -17,21 +17,22 @@ public class ProjectSecurityConfig {
 
         @Bean
         SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+                http.csrf((csrf) -> csrf.disable());
                 http.authorizeHttpRequests(
                                 (requests) -> requests
                                                 .requestMatchers("/balance", "/loan", "/account", "/myCards")
                                                 .authenticated()
-                                                .requestMatchers("/about", "/notices").permitAll())
+                                                .requestMatchers("/about", "/notices", "/register").permitAll())
                                 .formLogin(Customizer.withDefaults())
                                 .httpBasic(Customizer.withDefaults());
 
                 return http.build();
         }
 
-        @Bean
-        public UserDetailsService userDetailsService(DataSource dataSource) {
-                return new JdbcUserDetailsManager(dataSource);
-        }
+        // @Bean
+        // public UserDetailsService userDetailsService(DataSource dataSource) {
+        // return new JdbcUserDetailsManager(dataSource);
+        // }
 
         @Bean
         public PasswordEncoder passwordEncoder() {
